@@ -61,11 +61,8 @@ function updateSnake() {
         GAMEPLAY_SOUND.pause();
         inputDir = { x: 0, y: 0 };
         alert("You lost. Press any key to play again!");
-        snakeArr = [
-            { x: 12, y: 15 },
-        ];
-        score = 0;
-        document.getElementById("score").innerHTML = `Score: ${score}`;
+        resetSnake();
+        resetScore();
         GAMEPLAY_SOUND.play();
     } else {
         for (let index = snakeArr.length - 2; index >= 0; index--) {
@@ -76,6 +73,19 @@ function updateSnake() {
         snakeArr[0].y += inputDir.y;
         // console.log(`Snake X: ${snakeArr[0].x} && Snake Y: ${snakeArr[0].y}`);
     }
+}
+
+// function to reset the snake 
+function resetSnake() {
+    snakeArr = [
+        { x: 12, y: 15 },
+    ];
+}
+
+// function to reset the score
+function resetScore() {
+    score = 0;
+    document.getElementById("score").innerHTML = `Score: ${score}`;
 }
 
 // Function to display snake in the board
