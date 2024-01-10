@@ -29,6 +29,8 @@ function gameEngine() {
     let board = document.getElementById("board");
     // declared to remove any redundant items from the board
     board.innerHTML = "";
+    // Display score
+    document.getElementById("score").innerHTML = `Score: ${score}`;
     // Display/Render the snake in the board
     displaySnake(board);
     // Display/Render the food in the board
@@ -63,6 +65,7 @@ function updateSnake() {
             { x: 12, y: 15 },
         ];
         score = 0;
+        document.getElementById("score").innerHTML = `Score: ${score}`;
         GAMEPLAY_SOUND.play();
     } else {
         for (let index = snakeArr.length - 2; index >= 0; index--) {
@@ -97,6 +100,7 @@ function updateFoodPosition() {
         snakeArr.unshift({ x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y });
         // Increment the score when snake eats the food
         score += 1;
+        document.getElementById("score").innerHTML = `Score: ${score}`;
         // Move the food to a new random position
         let a = 2;
         let b = 16;
