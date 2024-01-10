@@ -23,12 +23,17 @@
     grid-template-columns: repeat(18, 1fr);
 }
 
-.snake {
+.snakeHead {
+    background-color: red;
+    border: 2px black solid;
+}
+
+.snakeBody {
     background-color: rgb(37, 168, 8);
     border: 2px black solid;
 }
 
 .food {
-    background-color: red;
+    background-color: purple;
     border: 2px black solid;
 }
