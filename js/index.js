@@ -2,7 +2,7 @@ import { FOOD_SOUND, GAMEOVER_SOUND, MOVE_SOUND, GAMEPLAY_SOUND } from "./consta
 
 // Variables and Constants
 let inputDir = { x: 0, y: 0 };
-let speed = 2;
+let speed = 5;
 let lastRenderedTime = 0;
 let snakeArr = [
     { x: 12, y: 15 },
@@ -24,8 +24,8 @@ function main(cTime) {
 function gameEngine() {
     // Update the snake array
     updateSnake();
-    // Update the food
-    updateFood();
+    // Update the food position
+    updateFoodPosition();
     let board = document.getElementById("board");
     // declared to remove any redundant items from the board
     board.innerHTML = "";
@@ -37,6 +37,17 @@ function gameEngine() {
 
 // Function to check if snake collided with wall
 function isCollide() {
+    // If snake collides with its own body
+    for (let index = 1; index < snakeArr.length; index++) {
+        if (snakeArr[index].x === snakeArr[0].x && snakeArr[index].y === snakeArr[0].y) {
+            return true;
+        }
+    }
+    // If snake collides with the wall
+    if (snakeArr[0].x < 0 || snakeArr[0].y < 0 || snakeArr[0].x > 18 || snakeArr[0].y > 18) {
+        return true;
+    }
+
     return false;
 }
 
@@ -53,6 +64,14 @@ function updateSnake() {
         ];
         score = 0;
         GAMEPLAY_SOUND.play();
+    } else {
+        for (let index = snakeArr.length - 2; index >= 0; index--) {
+            snakeArr[index + 1] = { ...snakeArr[index] };
+        }
+
+        snakeArr[0].x += inputDir.x;
+        snakeArr[0].y += inputDir.y;
+        // console.log(`Snake X: ${snakeArr[0].x} && Snake Y: ${snakeArr[0].y}`);
     }
 }
 
@@ -71,9 +90,11 @@ function displaySnake(board) {
     });
 }
 
-// Function to update the food in the board when snake eats it
-function updateFood() {
+// Function to update the food position in the board when snake eats it
+function updateFoodPosition() {
     if (snakeArr[0].x === food.x && snakeArr[0].y === food.y) {
+        FOOD_SOUND.play();
+        snakeArr.unshift({ x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y });
         // Increment the score when snake eats the food
         score += 1;
         // Move the food to a new random position
@@ -95,16 +116,16 @@ function displayFood(board) {
 // Main Game Process Starts Here
 window.requestAnimationFrame(main);
 window.addEventListener('keydown', event => { // start the game on any key down press
-    inputDir = { x: 0, y: 1 };
+    GAMEPLAY_SOUND.play();
     MOVE_SOUND.play();
     switch (event.key) {
         case "ArrowUp":
             inputDir.x = 0;
-            inputDir.y = 1;
+            inputDir.y = -1;
             break;
         case "ArrowDown":
             inputDir.x = 0;
-            inputDir.y = -1;
+            inputDir.y = 1;
             break;
         case "ArrowLeft":
             inputDir.x = -1;
